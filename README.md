@@ -1,5 +1,5 @@
 # Huffman-Encode
 Huffman Encoding ECNU DataStructure Project
 
-²âÊÔvsµÄgitÌá½»
-1234
+Â²Ã¢ÃŠÃ”vsÂµÃ„gitÃŒÃ¡Â½Â»
+
