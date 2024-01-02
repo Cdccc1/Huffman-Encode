@@ -41,6 +41,11 @@ bool PriorityQueue<T>::isEmpty() const {
 }
 
 template <typename T>
+size_t PriorityQueue<T>::size() const{
+    return heap.size();
+}
+
+template <typename T>
 void PriorityQueue<T>::heapifyUp(int idx) {
     while (idx > 0 && heap[parent(idx)] > heap[idx]) {
         std::swap(heap[parent(idx)], heap[idx]);

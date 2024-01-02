@@ -6,13 +6,14 @@ FrequencyCounter::FrequencyCounter() {}
 
 FrequencyCounter::FrequencyCounter(const std::wstring& filename) {
     // 在构造函数中计算字符频率
-    this->frequency_table = countFrequency(filename);
+    this->frequencyTable = countFrequency(filename);
 }
 
 
 FrequencyCounter::~FrequencyCounter() {}
 
 
+// 计算字符频率
 std::map<std::wstring, int> FrequencyCounter::countFrequency(const std::wstring& filename) {
     std::wifstream file(filename);
     
@@ -23,15 +24,15 @@ std::map<std::wstring, int> FrequencyCounter::countFrequency(const std::wstring&
         throw std::runtime_error("FrequencyCounter无法打开文件");
     }
 
-    std::map<std::wstring, int> frequency_table;
+    std::map<std::wstring, int> frequencyTable;
     std::wstring line;
     while (std::getline(file, line)) {
         for (wchar_t ch : line) {
-            frequency_table[std::wstring(1, ch)]++;
+            frequencyTable[std::wstring(1, ch)]++;
         }
     }
     file.close();
-    return frequency_table;
+    return frequencyTable;
 }
 
 
@@ -43,7 +44,7 @@ void FrequencyCounter::writeFrequency(const std::wstring& outputFilename) {
         throw std::runtime_error("FrequencyCounter无法创建文件: ");
     }
 
-    for (auto& pair : frequency_table) {
+    for (auto& pair : frequencyTable) {
         outFile << pair.first << L": " << pair.second << L"\n";
     }
     outFile.close();
