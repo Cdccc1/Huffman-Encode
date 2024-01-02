@@ -1,8 +1,15 @@
 #include <iostream>
 #include "hash_cmp.h"
 #include <string>
-
 using namespace std;
+
+
+// 如果要运行该测试文件，将下面那行取消注释，并将其他测试文件(以_test结尾)的这部分内容加上注释
+// #define RUN_TEST
+
+
+
+#ifdef RUN_TEST
 int main()
 {
     string input1, input2;
@@ -23,3 +30,4 @@ int main()
     }
     return 0;
 }
+#endif

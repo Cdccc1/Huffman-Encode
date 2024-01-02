@@ -1,11 +1,12 @@
-/*
 #include "frequency_counter.h"
 #include <iostream>
 #include <string>
 #include <codecvt>
 #include <locale>
-
 using namespace std;
+
+// 如果要运行该测试文件，将下面那行取消注释，并将其他测试文件(以_test结尾)的这部分内容加上注释
+// #define RUN_TEST
 
 // 辅助函数，用于从 std::string 转换为 std::wstring
 std::wstring string_to_wstring(const std::string& str) {
@@ -13,6 +14,8 @@ std::wstring string_to_wstring(const std::string& str) {
     return converter.from_bytes(str);
 }
 
+
+#ifdef RUN_TEST
 int main() {
     cout << "请输入原始文件路径：" << endl;
     string inputPath;
@@ -38,4 +41,4 @@ int main() {
 
     return 0;
 }
-*/
+#endif
