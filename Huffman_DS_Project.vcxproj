@@ -128,11 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="frequency_counter.h" />
+    <ClInclude Include="hash_cmp.h" />
     <ClInclude Include="h_priority_queue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="frequency_counter.cpp" />
     <ClCompile Include="frequency_counter_test.cpp" />
+    <ClCompile Include="hash_cmp.cpp" />
+    <ClCompile Include="hash_cmp_test.cpp" />
     <ClCompile Include="h_priority_queue.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
