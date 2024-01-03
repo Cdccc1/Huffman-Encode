@@ -28,6 +28,7 @@ void Compressor::buildCodes() {
 
 // 实际进行压缩的函数
 void Compressor::compress(const std::wstring& inputFilename, const std::wstring& outputFilename) {
+    
     // 以二进制方式打开输入和输出文件
     std::wifstream inputFile(inputFilename, std::ios::binary);
     std::ofstream outputFile(outputFilename, std::ios::binary);
@@ -43,6 +44,7 @@ void Compressor::compress(const std::wstring& inputFilename, const std::wstring&
 
     // 初始化一个空的二进制字符串用于存放编码
     std::string binaryStream;
+
     for (wchar_t ch : text) {
         std::wstring wcode = codes[ch]; // 获取宽字符串格式的哈夫曼编码
         // 将宽字符串编码转换为普通字符串并累加到二进制流中
@@ -84,3 +86,6 @@ void Compressor::compressFile(const std::wstring& inputFilename, const std::wstr
     }
 }
 
+HuffmanTree& Compressor::getHuffmanTree() {
+    return huffmanTree;
+}

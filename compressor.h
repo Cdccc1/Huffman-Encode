@@ -17,6 +17,8 @@ public:
 	// 读取文件，进行压缩，输出到指定文件
 	void compressFile(const std::wstring& inputFilename, const std::wstring& outputFilename);
 
+	// 返回创建好的哈夫曼树
+	HuffmanTree& getHuffmanTree();
 private:
 	// 字符频率统计表
 	std::map<std::wstring, int> frequencyTable;

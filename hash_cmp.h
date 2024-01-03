@@ -1,9 +1,4 @@
 #pragma once
-class hash_cmp
-{
-};
-
-#pragma once
 #include <string>
 class FileHasher
 {
