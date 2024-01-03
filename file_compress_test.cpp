@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "compressor.h"
+#include "decompressor.h"
 #include "h_priority_queue.h"
 #include <locale>
 #include <codecvt>
@@ -26,7 +27,7 @@ int main() {
 
     // 创建Compressor实例
     Compressor compressor;
-
+    
     // 尝试进行文件压缩
     try {
         compressor.compressFile(inputFilename, outputFilename);
@@ -35,7 +36,14 @@ int main() {
     catch (const std::exception& e) {
         wcerr << L"文件压缩失败: " << e.what() << endl;
     }
-
+    
+    Decompressor decompressor(compressor.getHuffmanTree());
+    wcout << L"请输入要解压缩的文件名: " << endl;
+    getline(std::wcin, inputFilename);
+    wcout << L"请输入解压缩后的输出文件名: " << endl;
+    getline(std::wcin, outputFilename);
+    decompressor.decompressFile(inputFilename, outputFilename);
+    wcout << L"文件解压缩成功。输出文件: " << outputFilename << endl;
     return 0;
 }
 #endif
