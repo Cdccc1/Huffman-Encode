@@ -16,11 +16,14 @@ unsigned long long FileHasher::computeHash(const std::string& filename)
 		std::ostringstream content;
 		content << file.rdbuf();
 		std::string fileContent = content.str();
-		unsigned long long hash = 0, count = 0;
-		for (auto x : fileContent)
+		unsigned long long hash = 0, count = fileContent.size();
+		for (int i = 0; i < count; i++)
 		{
-			hash = x * count;
-			count++;
+			if (fileContent[i] == 13)
+			{
+				fileContent[i] = 10;
+			}
+			hash = hash+ fileContent[i] * i;
 		}
 		Hash = hash;
 		return hash;
