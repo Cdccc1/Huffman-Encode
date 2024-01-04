@@ -18,6 +18,12 @@ public:
 	FrequencyCounter(const std::string& filename);
 	~FrequencyCounter();
 
+    //char utf8char[10]{ 0 };
+    
+
+    // 辅助函数，从字节流中读取下一个UTF-8编码的字符
+	std::string& readUTF8Char(std::ifstream& stream);
+
 	// 计算所给文件的字符频率
 	std::map<std::string, int> countFrequency(const std::string& filename);
 	
@@ -27,4 +33,5 @@ public:
 private:
 	// 存储所读取文档中的字符频率
 	std::map<std::string, int> frequencyTable;
+    std::string utf8char;
 };

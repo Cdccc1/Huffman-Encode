@@ -33,6 +33,9 @@ private:
 	// 哈夫曼树实例
 	HuffmanTree huffmanTree;
 
+	// 字符计数器实例
+	FrequencyCounter fc;
+
 	// 读取文件并统计字符频率
 	void countFrequency(const std::string& inputFilename);
 

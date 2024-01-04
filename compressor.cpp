@@ -12,7 +12,8 @@ Compressor::~Compressor() {}
 // 读取文件,统计字符频率,字符频率写入
 void Compressor::countFrequency(const std::string& inputFilename) {
     try {
-        FrequencyCounter fc(inputFilename);
+        // FrequencyCounter fc(inputFilename);
+        fc = inputFilename;
         frequencyTable = fc.countFrequency(inputFilename);
         // 直接调用FrequencyCounter的写入统计函数
         fc.writeFrequency(inputFilename + "_freq.txt");
@@ -28,7 +29,7 @@ void Compressor::buildCodes() {
     huffmanTree.buildTree(frequencyTable);
     codes = huffmanTree.encode();
 }
-
+/*
 // 辅助函数，从字节流中读取下一个UTF-8编码的字符
 std::string readUTF8CharHelper(std::ifstream& stream) {
     std::string utf8char;
@@ -49,7 +50,7 @@ std::string readUTF8CharHelper(std::ifstream& stream) {
     }
     return utf8char;
 }
-
+*/
 void Compressor::compress(const std::string& inputFilename, const std::string& outputFilename) {
 
     // 以二进制方式打开输入和输出文件
@@ -68,7 +69,7 @@ void Compressor::compress(const std::string& inputFilename, const std::string& o
     outputFile.put(0); // 先占位一个字节，稍后填入最后一个字节中的有效位数
 
     // 使用辅助函数读取UTF-8字符
-    std::string utf8char = readUTF8CharHelper(inputFile);
+    std::string& utf8char = fc.readUTF8Char(inputFile);
     while (!utf8char.empty()) {
         std::vector<bool> bits = codes[utf8char];
 
@@ -86,7 +87,7 @@ void Compressor::compress(const std::string& inputFilename, const std::string& o
         }
 
         // 继续读取下一个字符
-        utf8char = readUTF8CharHelper(inputFile);
+        utf8char = fc.readUTF8Char(inputFile);
     }
 
     // 处理最后一个不完整的字节
