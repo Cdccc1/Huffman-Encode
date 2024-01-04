@@ -23,7 +23,7 @@ void HuffmanTree::freeTree(Node* node) {
 
 // 利用统计的字符频率表建树，利用自行实现的小根堆优化
 void HuffmanTree::buildTree(const std::map<std::string, int>& frequencies) {
-    PriorityQueue<Node*, HuffmanTree::Cmp> pq;
+    PriorityQueue<Node*, Cmp> pq;
     for (auto& pair : frequencies) {
         pq.push(new Node(pair.first, pair.second));
     }

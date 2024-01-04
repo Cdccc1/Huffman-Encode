@@ -2,10 +2,13 @@
 
 #include <vector>
 #include <stdexcept>
+#include <type_traits>
 
 template <typename T, typename Cmp>
 class PriorityQueue {
 public:
+    static_assert(std::is_function<decltype(Cmp::operator())>::value, "Cmp模板必须重载圆括号运算符");
+
     PriorityQueue() {
         // 构造函数初始化为空的堆
     }
