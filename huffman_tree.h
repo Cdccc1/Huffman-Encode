@@ -25,6 +25,14 @@ public:
 			return frequency > other.frequency;
 		}
 	};
+
+	struct Cmp
+	{
+		bool operator()(const Node* left, const Node* right) const
+		{
+			return left->frequency > right->frequency;
+		}
+	};
 	
 	// 构造函数和析构函数
 	HuffmanTree();

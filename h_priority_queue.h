@@ -3,7 +3,7 @@
 #include <vector>
 #include <stdexcept>
 
-template <typename T>
+template <typename T, typename Cmp>
 class PriorityQueue {
 public:
     PriorityQueue() {
@@ -46,9 +46,10 @@ public:
 
 private:
     std::vector<T> heap;  // 用于存储堆元素的向量
+    Cmp f;
 
     void heapifyUp(int idx) {
-        while (idx > 0 && heap[parent(idx)] > heap[idx]) {
+        while (idx > 0 && f(heap[parent(idx)], heap[idx])) {
             std::swap(heap[parent(idx)], heap[idx]);
             idx = parent(idx);
         }
@@ -59,11 +60,11 @@ private:
         int leftChildIdx = leftChild(idx);
         int rightChildIdx = rightChild(idx);
 
-        if (leftChildIdx < heap.size() && heap[leftChildIdx] < heap[smallest]) {
+        if (leftChildIdx < heap.size() && f(heap[smallest], heap[leftChildIdx])) {
             smallest = leftChildIdx;
         }
 
-        if (rightChildIdx < heap.size() && heap[rightChildIdx] < heap[smallest]) {
+        if (rightChildIdx < heap.size() && f(heap[smallest], heap[rightChildIdx])) {
             smallest = rightChildIdx;
         }
 

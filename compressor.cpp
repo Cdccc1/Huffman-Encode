@@ -62,6 +62,7 @@ void Compressor::compress(const std::string& inputFilename, const std::string& o
         std::cerr << "Error opening files!" << std::endl;
         throw std::runtime_error("Cannot open input/output files.");
     }
+
     char currentByte = 0;
     int bitCount = 0;
     outputFile.put(0); // 先占位一个字节，稍后填入最后一个字节中的有效位数
