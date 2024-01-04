@@ -3,6 +3,7 @@
 #include "compressor.h"
 #include "decompressor.h"
 #include "h_priority_queue.h"
+#include "hash_cmp.h"
 #include <locale>
 #include <codecvt>
 #include <windows.h>
@@ -18,32 +19,43 @@ int main() {
 
     cout << "file compress test" << endl;
     // 请求用户输入待压缩文件名和输出文件名
-    string inputFilename, outputFilename;
+    string inputFilename1, outputFilename1,inputFilename2, outputFilename2;
     cout << "请输入要压缩的文件名: " << endl;
-    getline(cin, inputFilename);
+    getline(cin, inputFilename1);
     // inputFilename = "E:\\DataStucture\\Huffman-Encode\\src\\斗破苍穹.txt";
     cout << "请输入压缩后的输出文件名: " << endl;
-    getline(cin, outputFilename);
+    getline(cin, outputFilename1);
 
     // 创建Compressor实例
     Compressor compressor;
-
+    
     // 尝试进行文件压缩
     try {
-        compressor.compressFile(inputFilename, outputFilename);
-        cout << "文件压缩成功。输出文件: " << outputFilename << endl;
+        compressor.compressFile(inputFilename1, outputFilename1);
+        cout << "文件压缩成功。输出文件: " << outputFilename1 << endl;
     }
     catch (const std::exception& e) {
         cerr << "文件压缩失败: " << e.what() << endl;
     }
-
+    
 
     cout << "请输入要解压缩的文件名: " << endl;
-    getline(cin, inputFilename);
+    getline(cin, inputFilename2);
     cout << "请输入解压缩后的输出文件名: " << endl;
-    getline(cin, outputFilename);
-    compressor.decompressFile(inputFilename, outputFilename);
-    cout << "文件解压缩成功。输出文件: " << outputFilename << endl;
+    getline(cin, outputFilename2);
+    compressor.decompressFile(inputFilename2, outputFilename2);
+    cout << "文件解压缩成功。输出文件: " << outputFilename2 << endl;
+    FileHasher in1, in2;
+    in1.computeHash(inputFilename1);
+    in2.computeHash(outputFilename2);
+    if (in1.compareHash(in2))
+    {
+        cout << "文件相同" << endl;
+    }
+    else
+    {
+        cout << "文件不同" << endl;
+    }
     return 0;
 }
 #endif
