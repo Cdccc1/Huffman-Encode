@@ -86,3 +86,56 @@ void HuffmanTree::encodeHelper(Node* node, std::vector<bool> code, std::map<std:
     }
 }
 
+//通过层次遍历把树也放到压缩文件中
+void HuffmanTree::Hierachicalorder()
+{
+    Node* p = root;
+    std::queue<Node*> q;
+    if (root == NULL)
+    {
+        return;
+    }
+    else q.push(p);
+    while (!q.empty())
+    {
+        p = q.front();
+        q.pop();
+        if (p->character == "")
+        {
+            Tree.push_back(false);
+        }
+        else
+        {
+            Tree.push_back(true);
+            std::vector<char> charVector;
+            char length = p->character.size();
+            for (int i = 7; i >= 0; i--)
+            {
+                char bitValue = (length >> i) & 1;
+                charVector.push_back(bitValue);
+            }
+            for (int i = 0; i < length; i++)
+            {
+                for (int j = 7; j >= 0; j--)
+                {
+                    char bitValue = (p->character[i] >> j) & 1;
+                    charVector.push_back(bitValue);
+                }
+                
+            }
+            for (char value : charVector)
+            {
+                if (value == 0)
+                {
+                    Tree.push_back(false);
+                }
+                else
+                {
+                    Tree.push_back(true);
+                }
+            }
+        }
+        if (p->left != NULL) q.push(p->left);
+        if (p->right != NULL) q.push(p->right);
+    }
+}

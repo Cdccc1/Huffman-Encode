@@ -15,10 +15,10 @@ public:
 	~Compressor();
 
 	// 读取文件，进行压缩，输出到指定文件
-	void compressFile(const std::string& inputFilename, const std::string& outputFilename);
+	void compressFile(const std::string& inputFilename, const std::string& outputFilename,const std::string& outputTree);
 
 	// 读取文件，进行解压缩，输出到指定文件
-	void decompressFile(const std::string& inputFilename, const std::string& outputFilename);
+	void decompressFile(const std::string& inputTree,const std::string& inputFilename, const std::string& outputFilename);
 
 	// 返回创建好的哈夫曼树
 	HuffmanTree& getHuffmanTree();
@@ -43,10 +43,10 @@ private:
 	void buildCodes();
 
 	// 实际进行压缩的函数
-	void compress(const std::string& inputFilename, const std::string& outputFilename);
+	void compress(const std::string& inputFilename, const std::string& outputFilename, const std::string& outputTree);
 
 	// 实际解压缩函数
-	void decompress(const std::string& inputFilename, const std::string& outputFilename);
+	void decompress(const std::string& inputTree, const std::string& inputFilename, const std::string& outputFilename);
 
 	auto GetBoolVectorStartAddress(std::vector<bool>& vec) {
 	#ifdef __GNUC__
