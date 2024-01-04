@@ -4,8 +4,6 @@
 template class PriorityQueue<HuffmanTree::Node*>;
 
 
-
-
 // 构造函数
 HuffmanTree::HuffmanTree() : root(nullptr) {}
 
@@ -24,10 +22,10 @@ void HuffmanTree::freeTree(Node* node) {
 }
 
 // 利用统计的字符频率表建树，利用自行实现的小根堆优化
-void HuffmanTree::buildTree(const std::map<std::wstring, int>& frequencies) {
+void HuffmanTree::buildTree(const std::map<std::string, int>& frequencies) {
     PriorityQueue<Node*> pq;
     for (auto& pair : frequencies) {
-        pq.push(new Node(pair.first[0], pair.second));
+        pq.push(new Node(pair.first, pair.second));
     }
 
     while (pq.size() > 1) {
@@ -35,47 +33,55 @@ void HuffmanTree::buildTree(const std::map<std::wstring, int>& frequencies) {
         pq.pop();
         Node* right = pq.top();
         pq.pop();
-        Node* parent = new Node(L'\0', left->frequency + right->frequency, left, right);
+        Node* parent = new Node("", left->frequency + right->frequency, left, right);
         pq.push(parent);
     }
 
     root = pq.top();
+    
+}
+
+// 返回根节点指针
+HuffmanTree::Node* HuffmanTree::getRoot() const {
+    return root; 
 }
 
 // 哈夫曼树编码
-std::map<wchar_t, std::wstring> HuffmanTree::encode() {
-    std::map<wchar_t, std::wstring> codeMap;
-    encodeHelper(root, L"", codeMap);
+std::map<std::string, std::vector<bool>> HuffmanTree::encode() {
+    std::map<std::string, std::vector<bool>> codeMap;
+    encodeHelper(root, std::vector<bool>(), codeMap);
+
+    // 遍历codeMap并打印字符及其对应的编码
+    /*for (const auto& pair : codeMap) {
+        std::cout << "Character: " << pair.first << " | Code: ";
+        for (bool bit : pair.second) {
+            std::cout << bit;
+        }
+        std::cout << std::endl;
+    }*/
+
+
     return codeMap;
 }
 
+
 // 递归编码Helper
-void HuffmanTree::encodeHelper(Node* node, std::wstring code, std::map<wchar_t, std::wstring>& codeMap) {
+// 修改参数类型为 std::vector<bool>，以适应动态长度的编码
+void HuffmanTree::encodeHelper(Node* node, std::vector<bool> code, std::map<std::string, std::vector<bool>>& codeMap) {
     if (!node) return;
     if (!node->left && !node->right) {
+        // 当到达叶子节点时，将编码添加到map中
         codeMap[node->character] = code;
     }
-    encodeHelper(node->left, code + L"0", codeMap);
-    encodeHelper(node->right, code + L"1", codeMap);
-}
+    else {
+        // 向左子树添加0，向右子树添加1
+        std::vector<bool> leftCode = code;
+        leftCode.push_back(false);
+        encodeHelper(node->left, leftCode, codeMap);
 
-// 用于解码的函数
-std::wstring HuffmanTree::decode(const std::wstring& encodedStr) {
-    std::wstring decoded;
-    Node* current = root;
-    for (wchar_t bit : encodedStr) {
-        if (bit == L'0') {
-            current = current->left;
-        }
-        else {
-            current = current->right;
-        }
-
-        // 到达叶子节点
-        if (!current->left && !current->right) {
-            decoded += current->character;
-            current = root; // 重置为根节点开始下一个字符的解码
-        }
+        std::vector<bool> rightCode = code;
+        rightCode.push_back(true);
+        encodeHelper(node->right, rightCode, codeMap);
     }
-    return decoded;
 }
+

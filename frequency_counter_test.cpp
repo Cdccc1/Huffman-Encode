@@ -6,7 +6,7 @@
 using namespace std;
 
 // 如果要运行该测试文件，将下面那行取消注释，并将其他测试文件(以_test结尾)的这部分内容加上注释
-// #define RUN_TEST
+ // #define RUN_TEST
 
 // 辅助函数，用于从 std::string 转换为 std::wstring
 std::wstring string_to_wstring(const std::string& str) {
@@ -25,13 +25,9 @@ int main() {
     string outputPath;
     getline(cin, outputPath);  // 读取输出文件路径
 
-    // 将路径转换为 std::wstring
-    wstring wInputPath = string_to_wstring(inputPath);
-    wstring wOutputPath = string_to_wstring(outputPath);
-
     try {
-        FrequencyCounter counter(wInputPath);  // 创建 FrequencyCounter 实例
-        counter.writeFrequency(wOutputPath);  // 将频率结果写入输出文件
+        FrequencyCounter counter(inputPath);  // 创建 FrequencyCounter 实例
+        counter.writeFrequency(outputPath);  // 将频率结果写入输出文件
 
         cout << "字符频率已写入文件: " << outputPath << endl;
     }

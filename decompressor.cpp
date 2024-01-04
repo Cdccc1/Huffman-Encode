@@ -36,7 +36,7 @@ void Decompressor::decompress(const std::wstring& inputFilename, const std::wstr
 	//È¥³ýÌî³ä²¿·Ö
 
 	std::wstring currentcode;
-	currentcode = huffmanTree.decode(binaryStream);
+	//currentcode = huffmanTree.decode(binaryStream);
 	for (int i = 0; i < currentcode.size(); i++)
 	{
 		outputFile.put(currentcode[i]);
