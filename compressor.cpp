@@ -240,7 +240,7 @@ void Compressor::decompress(const std::string& inputTree,const std::string& inpu
         // 当到达叶子节点时，找到一个字符
         if (current->left == nullptr && current->right == nullptr) {
             decodedText.append(current->character); // 将字符添加到解码文本
-            current = huffmanTree.getRoot(); // 重置到根节点开始下一个字符的解码
+            current = H.getRoot(); // 重置到根节点开始下一个字符的解码
         }
     }
 
