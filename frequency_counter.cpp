@@ -1,10 +1,11 @@
 #include "frequency_counter.h"
+#include <cstring>
 
 
-FrequencyCounter::FrequencyCounter() {}
+FrequencyCounter::FrequencyCounter() : utf8char(std::string(10, 0)) {}
 
 
-FrequencyCounter::FrequencyCounter(const std::string& filename) {
+FrequencyCounter::FrequencyCounter(const std::string& filename) : FrequencyCounter() {
     // 在构造函数中计算字符频率
     this->frequencyTable = countFrequency(filename);
 }
@@ -12,12 +13,13 @@ FrequencyCounter::FrequencyCounter(const std::string& filename) {
 
 FrequencyCounter::~FrequencyCounter() {}
 
-// 辅助函数，从字节流中读取下一个UTF-8编码的字符
-std::string readUTF8Char(std::ifstream& stream) {
-    std::string utf8char;
+
+std::string& FrequencyCounter::readUTF8Char(std::ifstream& stream) {
+    utf8char.clear();
     char ch;
     if (stream.get(ch)) {
-        utf8char += ch;
+        utf8char.push_back(ch);
+        // utf8char += ch;
         // 确定UTF-8字符中的字节数
         int bytesInChar = 1;
         if ((ch & 0x80) != 0) { // 超过一个字节
@@ -26,13 +28,13 @@ std::string readUTF8Char(std::ifstream& stream) {
             else if ((ch & 0xF8) == 0xF0) bytesInChar = 4;
             // 读取UTF-8字符的剩余字节
             while (--bytesInChar > 0 && stream.get(ch)) {
-                utf8char += ch;
+                // utf8char += ch;
+                utf8char.push_back(ch);
             }
         }
     }
     return utf8char;
 }
-
 // 计算字符频率
 std::map<std::string, int> FrequencyCounter::countFrequency(const std::string& filename) {
     std::ifstream file(filename, std::ios::binary); // 以二进制方式打开以防止字符转换
@@ -45,7 +47,8 @@ std::map<std::string, int> FrequencyCounter::countFrequency(const std::string& f
     std::map<std::string, int> frequencyTable;
 
     while (!file.eof()) {
-        std::string utf8char = readUTF8Char(file);
+        // std::string utf8char = readUTF8Char(file);
+        std::string& utf8char = readUTF8Char(file);
         if (!utf8char.empty()) {
             frequencyTable[utf8char]++;
         }

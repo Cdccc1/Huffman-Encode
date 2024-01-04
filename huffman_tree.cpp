@@ -1,7 +1,7 @@
 #include "huffman_tree.h"
 
 // 显式实例化
-template class PriorityQueue<HuffmanTree::Node*>;
+template class PriorityQueue<HuffmanTree::Node*, HuffmanTree::Cmp>;
 
 
 // 构造函数
@@ -23,7 +23,7 @@ void HuffmanTree::freeTree(Node* node) {
 
 // 利用统计的字符频率表建树，利用自行实现的小根堆优化
 void HuffmanTree::buildTree(const std::map<std::string, int>& frequencies) {
-    PriorityQueue<Node*> pq;
+    PriorityQueue<Node*, Cmp> pq;
     for (auto& pair : frequencies) {
         pq.push(new Node(pair.first, pair.second));
     }
@@ -52,14 +52,15 @@ std::map<std::string, std::vector<bool>> HuffmanTree::encode() {
     encodeHelper(root, std::vector<bool>(), codeMap);
 
     // 遍历codeMap并打印字符及其对应的编码
-    /*for (const auto& pair : codeMap) {
+    /*
+    for (const auto& pair : codeMap) {
         std::cout << "Character: " << pair.first << " | Code: ";
         for (bool bit : pair.second) {
             std::cout << bit;
         }
         std::cout << std::endl;
-    }*/
-
+    }
+    */
 
     return codeMap;
 }

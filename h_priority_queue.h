@@ -2,10 +2,13 @@
 
 #include <vector>
 #include <stdexcept>
+#include <type_traits>
 
-template <typename T>
+template <typename T, typename Cmp>
 class PriorityQueue {
 public:
+    static_assert(std::is_function<decltype(Cmp::operator())>::value, "Cmp模板必须重载圆括号运算符");
+
     PriorityQueue() {
         // 构造函数初始化为空的堆
     }
@@ -46,9 +49,10 @@ public:
 
 private:
     std::vector<T> heap;  // 用于存储堆元素的向量
+    Cmp f;
 
     void heapifyUp(int idx) {
-        while (idx > 0 && heap[parent(idx)] > heap[idx]) {
+        while (idx > 0 && f(heap[parent(idx)], heap[idx])) {
             std::swap(heap[parent(idx)], heap[idx]);
             idx = parent(idx);
         }
@@ -59,11 +63,11 @@ private:
         int leftChildIdx = leftChild(idx);
         int rightChildIdx = rightChild(idx);
 
-        if (leftChildIdx < heap.size() && heap[leftChildIdx] < heap[smallest]) {
+        if (leftChildIdx < heap.size() && f(heap[smallest], heap[leftChildIdx])) {
             smallest = leftChildIdx;
         }
 
-        if (rightChildIdx < heap.size() && heap[rightChildIdx] < heap[smallest]) {
+        if (rightChildIdx < heap.size() && f(heap[smallest], heap[rightChildIdx])) {
             smallest = rightChildIdx;
         }
 
