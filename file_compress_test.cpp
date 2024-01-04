@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include "compressor.h"
-#include "decompressor.h"
 #include "h_priority_queue.h"
 #include "hash_cmp.h"
 #include <locale>
@@ -35,11 +34,13 @@ int main() {
     // 尝试进行文件压缩
     try {
         compressor.compressFile(inputFilename1, outputFilename1,outputTree);
-        cout << "文件压缩成功。输出文件: " << outputFilename1 <<"和"<<outputTree<< endl;
+        
     }
     catch (const std::exception& e) {
         cerr << "文件压缩失败: " << e.what() << endl;
     }
+    cout << "文件压缩成功。输出文件: " << outputFilename1 << "和" << outputTree << endl;
+
     cout << "请输入要解压缩的树名: " << endl;
     getline(cin, inputTree);
     cout << "请输入要解压缩的文件名: " << endl;

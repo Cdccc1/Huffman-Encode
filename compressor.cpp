@@ -72,7 +72,7 @@ void Compressor::compress(const std::string& inputFilename, const std::string& o
     // 使用辅助函数读取UTF-8字符
     std::string& utf8char = fc.readUTF8Char(inputFile);
     while (!utf8char.empty()) {
-        std::vector<bool> bits = codes[utf8char];
+        std::vector<bool>& bits = codes[utf8char];
 
         for (bool bit : bits) {
             if (bit) {
@@ -212,23 +212,57 @@ void Compressor::decompress(const std::string& inputTree,const std::string& inpu
     int padding = static_cast<int>(paddingInfo);
 
     // 读取剩余的压缩数据
-    std::vector<bool> compressedData;
+    //std::vector<bool> compressedData;
+    std::vector<unsigned char> compressedData;
     char byte;
     while (inputFile.get(byte)) {
-        for (int i = 7; i >= 0; --i) {
-            compressedData.push_back((byte >> i) & 1);
-        }
+        //for (int i = 7; i >= 0; --i) {
+            //compressedData.push_back((byte >> i) & 1);
+        //}
+        compressedData.push_back(byte);
     }
     inputFile.close(); // 关闭输入文件
 
     // 考虑到填充，从压缩数据中移除最后几个填充位
-    if (padding > 0 && padding < 8) {
-        compressedData.erase(compressedData.end() - (8 - padding), compressedData.end());
-    }
+    /*if (padding > 0 && padding < 8) {
+        //compressedData.erase(compressedData.end() - (8 - padding), compressedData.end());
+        // 获取最后一个字节
+        unsigned char& lastByte = compressedData.back();
 
+        // 只保留最后一个字节中的有效位
+        // 通过将最后一个字节向左移动再向右移动相同的位数，来清除无效的位
+        lastByte = (lastByte >> (8 - padding)) >> (8 - padding);
+    }*/
+    int len = compressedData.size() * 8 - 8 + padding;
+    int cnt = 0;
     // 使用哈夫曼树进行解码
     std::string decodedText;
     //HuffmanTree::Node* current = huffmanTree.getRoot();
+    for (unsigned char data : compressedData) {
+        for (int i = 7; i >= 0; --i) {
+            if (cnt == len) { // 如果处理完了所有有效位，停止解码
+                break;
+            }
+            bool bit = (data >> i) & 1;
+            
+            // 根据比特位来遍历哈夫曼树
+            if (!bit && current->left != nullptr) {
+                current = current->left;
+            }
+            else if (bit && current->right != nullptr) {
+                current = current->right;
+            }
+            // 当到达叶子节点时，找到一个字符
+            if (current->left == nullptr && current->right == nullptr) {
+                decodedText.append(current->character); // 将字符添加到解码文本
+                current = H.getRoot(); // 重置到根节点开始下一个字符的解码
+            }
+            cnt++;
+        }
+        if (cnt == len) { // 如果处理完了所有有效位，停止解码
+            break;
+        }
+    }/*
     for (bool bit : compressedData) {
         if (!bit && current->left != nullptr) {
             current = current->left;
@@ -242,7 +276,7 @@ void Compressor::decompress(const std::string& inputTree,const std::string& inpu
             decodedText.append(current->character); // 将字符添加到解码文本
             current = H.getRoot(); // 重置到根节点开始下一个字符的解码
         }
-    }
+    }*/
 
     outputFile.write(decodedText.c_str(), decodedText.size()); // 将解码后的文本写入输出文件
     outputFile.close(); // 关闭输出文件

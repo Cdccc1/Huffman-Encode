@@ -33,5 +33,7 @@ public:
 private:
 	// 存储所读取文档中的字符频率
 	std::map<std::string, int> frequencyTable;
+
+	// utf-8编码字符
     std::string utf8char;
 };
